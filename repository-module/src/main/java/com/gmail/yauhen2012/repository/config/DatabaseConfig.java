@@ -1,4 +1,4 @@
-package com.gmail.yauhen2012.config;
+package com.gmail.yauhen2012.repository.config;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
