@@ -15,4 +15,35 @@
             <column name="info" type="varchar(200)"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="yauhen2012@gmail.com">
+        <insert tableName="city_info">
+            <column name="city_name" value="Minsk"/>
+            <column name="info" value="Walking is dangerous for your freedom. Better stay at home and watch TV"/>
+        </insert>
+    </changeSet>
+    <changeSet id="3" author="yauhen2012@gmail.com">
+        <insert tableName="city_info">
+            <column name="city_name" value="NewYork"/>
+            <column name="info" value="The Statue of Liberty is not the most important thing. Take some more money and go to Harlem"/>
+        </insert>
+    </changeSet>
+    <changeSet id="4" author="yauhen2012@gmail.com">
+        <insert tableName="city_info">
+            <column name="city_name" value="Paris"/>
+            <column name="info" value="Be sure to kiss the Frenchwoman (Frenchman) and eat a croissant!"/>
+        </insert>
+    </changeSet>
+    <changeSet id="5" author="yauhen2012@gmail.com">
+        <insert tableName="city_info">
+            <column name="city_name" value="Лида"/>
+            <column name="info" value="Не ходи в замок! Обязательно посети кафе 'Еда и напитки'"/>
+        </insert>
+    </changeSet>
+    <changeSet id="6" author="yauhen2012@gmail.com">
+        <insert tableName="city_info">
+            <column name="city_name" value="Tokyo"/>
+            <column name="info" value="I can't say anything about Tokyo. Do what you want"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

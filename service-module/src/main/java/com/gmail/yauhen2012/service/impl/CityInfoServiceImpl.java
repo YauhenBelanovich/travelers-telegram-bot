@@ -1,6 +1,7 @@
 package com.gmail.yauhen2012.service.impl;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
@@ -22,7 +23,7 @@ public class CityInfoServiceImpl implements CityInfoService {
     @Override
     @Transactional
     public Boolean add(AddCityInfoDTO addCityInfoDTO) throws CityExistsException {
-        if (cityExists(addCityInfoDTO.getCityName())) {
+        if (cityExists(addCityInfoDTO.getCityName().toLowerCase())) {
             throw new CityExistsException("City with name: " + addCityInfoDTO.getCityName() + " already exists");
         }
         CityInfo cityInfo = convertAddCityInfoDTOToDatabaseCityInfo(addCityInfoDTO);
@@ -67,7 +68,7 @@ public class CityInfoServiceImpl implements CityInfoService {
         CityInfo cityInfo = cityInformationRepository.findById(id);
         if (cityInfo != null) {
             if (addCityInfoDTO.getCityName() != null && !addCityInfoDTO.getCityName().equals("")) {
-                cityInfo.setCityName(addCityInfoDTO.getCityName());
+                cityInfo.setCityName(addCityInfoDTO.getCityName().toLowerCase());
             }
             if (addCityInfoDTO.getInfo() != null && !addCityInfoDTO.getInfo().equals("")) {
                 cityInfo.setInfo(addCityInfoDTO.getInfo());
@@ -78,14 +79,24 @@ public class CityInfoServiceImpl implements CityInfoService {
         return false;
     }
 
+    @Override
+    @Transactional
+    public CityInfoDTO findCityInfoByName(String cityName) {
+        CityInfo cityInfo = cityInformationRepository.findByCityName(cityName.toLowerCase());
+        if (cityInfo != null) {
+            return convertDatabaseObjectToDTO(cityInfo);
+        }
+        return null;
+    }
+
     private boolean cityExists(String cityName) {
-        CityInfo cityInfo = cityInformationRepository.findByCityName(cityName);
+        CityInfo cityInfo = cityInformationRepository.findByCityName(cityName.toLowerCase());
         return cityInfo != null;
     }
 
     private CityInfo convertAddCityInfoDTOToDatabaseCityInfo(AddCityInfoDTO addCityInfoDTO) {
         CityInfo cityInfo = new CityInfo();
-        cityInfo.setCityName(addCityInfoDTO.getCityName());
+        cityInfo.setCityName(addCityInfoDTO.getCityName().toLowerCase());
         cityInfo.setInfo(addCityInfoDTO.getInfo());
         return cityInfo;
     }
