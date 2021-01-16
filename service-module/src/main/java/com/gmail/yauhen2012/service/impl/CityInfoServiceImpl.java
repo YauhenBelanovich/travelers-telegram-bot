@@ -1,21 +1,27 @@
 package com.gmail.yauhen2012.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.List;
-import java.util.Locale;
+import java.util.Properties;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
+import com.gmail.yauhen2012.repository.CityInformationRepository;
 import com.gmail.yauhen2012.repository.model.CityInfo;
 import com.gmail.yauhen2012.service.CityInfoService;
-import com.gmail.yauhen2012.repository.CityInformationRepository;
 import com.gmail.yauhen2012.service.exception.CityExistsException;
 import com.gmail.yauhen2012.service.model.AddCityInfoDTO;
 import com.gmail.yauhen2012.service.model.CityInfoDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CityInfoServiceImpl implements CityInfoService {
 
+    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     private final CityInformationRepository cityInformationRepository;
 
     public CityInfoServiceImpl(CityInformationRepository cityInformationRepository) {this.cityInformationRepository = cityInformationRepository;}
@@ -81,10 +87,13 @@ public class CityInfoServiceImpl implements CityInfoService {
 
     @Override
     @Transactional
-    public CityInfoDTO findCityInfoByName(String cityName) {
-        CityInfo cityInfo = cityInformationRepository.findByCityName(cityName.toLowerCase());
-        if (cityInfo != null) {
-            return convertDatabaseObjectToDTO(cityInfo);
+    public CityInfoDTO findCityInfoByName(String cityName, String appId) {
+        String registeredBotId = getBotProperty();
+        if (appId.equals(registeredBotId)) {
+            CityInfo cityInfo = cityInformationRepository.findByCityName(cityName.toLowerCase());
+            if (cityInfo != null) {
+                return convertDatabaseObjectToDTO(cityInfo);
+            }
         }
         return null;
     }
@@ -107,6 +116,21 @@ public class CityInfoServiceImpl implements CityInfoService {
         cityInfoDTO.setCityName(cityInfo.getCityName());
         cityInfoDTO.setInfo(cityInfo.getInfo());
         return cityInfoDTO;
+    }
+
+    private String getBotProperty() {
+        try (InputStream inputStream = getClass().getResourceAsStream("/application.properties")) {
+            Properties prop = new Properties();
+            if (inputStream == null) {
+                logger.error("Sorry, unable to find application.properties");
+            }
+            prop.load(inputStream);
+            return prop.getProperty("bot.id");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        logger.error("Cannot find bot property - " + "bot.id");
+        return null;
     }
 
 }

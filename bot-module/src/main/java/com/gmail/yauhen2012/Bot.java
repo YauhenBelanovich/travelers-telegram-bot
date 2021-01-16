@@ -1,9 +1,11 @@
 package com.gmail.yauhen2012;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,8 +55,9 @@ public class Bot extends TelegramLongPollingBot {
                 default:
                     try {
                         sendMsg(message,
-                                CityInformation.getCityInfo(message.getText(), model),
+                                CityInformation.getCityInfo(message.getText(), model, getBotProperty("bot.id")),
                                 false);
+
                     } catch (IOException e) {
                         sendMsg(message,
                                 "Sorry, I don't know such a city. Perhaps you need to use the api and add it to the database",
@@ -80,7 +83,7 @@ public class Bot extends TelegramLongPollingBot {
 
         KeyboardRow keyboardSecondRow = new KeyboardRow();
         keyboardSecondRow.add(new KeyboardButton("Paris"));
-        keyboardSecondRow.add(new KeyboardButton("Лида"));
+        keyboardSecondRow.add(new KeyboardButton("Lida"));
 
         keyboardRowList.add(keyboardFirstRow);
         keyboardRowList.add(keyboardSecondRow);
@@ -117,7 +120,6 @@ public class Bot extends TelegramLongPollingBot {
             } else {
                 setCityButtons(sendMessage);
             }
-            //setButtons(sendMessage);
             execute(sendMessage.setText(text));
         } catch (TelegramApiException e) {
             e.printStackTrace();
@@ -126,12 +128,26 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "YBmyTestWeatherBot";
+        return getBotProperty("bot.name");
     }
 
     @Override
     public String getBotToken() {
-        return "1564073224:AAEW6l5Y8wnFzI8ikQaAGu90S2QqSbuj2c8";
+        return getBotProperty("bot.token");
     }
 
+    private String getBotProperty(String property) {
+        try (InputStream inputStream = getClass().getResourceAsStream("/bot.properties")) {
+            Properties prop = new Properties();
+            if (inputStream == null) {
+                logger.error("Sorry, unable to find bot.properties");
+            }
+            prop.load(inputStream);
+            return prop.getProperty(property);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        logger.error("Cannot find bot property - " + property);
+        return null;
+    }
 }

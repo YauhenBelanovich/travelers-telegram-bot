@@ -10,9 +10,9 @@ import org.json.JSONObject;
 
 public class CityInformation {
 
-    public static String getCityInfo(String city, Model model) throws IOException {
+    public static String getCityInfo(String city, Model model, String botId) throws IOException {
 
-        URL url = new URL("http://localhost:8081/api/bot-city-info/" + city);
+        URL url = new URL("http://localhost:8081/api/bot-city-info?cityName=" + city + "&appId=" + botId);
 
         Scanner scanner = new Scanner((InputStream) url.getContent());
         String result = "";

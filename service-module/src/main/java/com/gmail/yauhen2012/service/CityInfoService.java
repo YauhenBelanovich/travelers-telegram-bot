@@ -18,6 +18,6 @@ public interface CityInfoService {
 
     Boolean updateCityInfo(Long id, AddCityInfoDTO addCityInfoDTO);
 
-    CityInfoDTO findCityInfoByName(String cityName);
+    CityInfoDTO findCityInfoByName(String cityName, String appId);
 
 }

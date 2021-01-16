@@ -36,8 +36,8 @@
     </changeSet>
     <changeSet id="5" author="yauhen2012@gmail.com">
         <insert tableName="city_info">
-            <column name="city_name" value="Лида"/>
-            <column name="info" value="Не ходи в замок! Обязательно посети кафе 'Еда и напитки'"/>
+            <column name="city_name" value="Lida"/>
+            <column name="info" value="Don't go to the castle. Be sure to visit the cafe 'Еда и напитки'"/>
         </insert>
     </changeSet>
     <changeSet id="6" author="yauhen2012@gmail.com">

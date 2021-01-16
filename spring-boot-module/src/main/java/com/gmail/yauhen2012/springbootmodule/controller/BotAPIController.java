@@ -9,8 +9,8 @@ import com.gmail.yauhen2012.springbootmodule.exceptionHandlerAPI.RecordNotFoundE
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,10 +22,10 @@ public class BotAPIController {
 
     public BotAPIController(CityInfoService cityInfoService) {this.cityInfoService = cityInfoService;}
 
-    @GetMapping("/{cityName}")
-    public CityInfoDTO getCityInfo(@PathVariable String cityName) {
+    @GetMapping
+    public CityInfoDTO getCityInfo(@RequestParam("cityName") String cityName, @RequestParam("appId") String appId) {
         logger.debug("Get API getCityInfo method");
-        Optional<CityInfoDTO> user = Optional.ofNullable(cityInfoService.findCityInfoByName(cityName));
+        Optional<CityInfoDTO> user = Optional.ofNullable(cityInfoService.findCityInfoByName(cityName, appId));
         return user.orElseThrow(() -> new RecordNotFoundException("City name '" + cityName + "' does no exist"));
     }
 }
