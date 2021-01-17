@@ -1,0 +1,1 @@
+insert into city_info (city_name, info) values ('testName', 'testInfo');

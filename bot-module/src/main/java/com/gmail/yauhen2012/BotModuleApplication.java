@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.gmail.yauhen2012.impl.BotCityInformationServiceImpl;
+import com.gmail.yauhen2012.model.BotCityInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -21,7 +23,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 
-public class Bot extends TelegramLongPollingBot {
+public class BotModuleApplication extends TelegramLongPollingBot {
 
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -30,7 +32,7 @@ public class Bot extends TelegramLongPollingBot {
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try {
-            telegramBotsApi.registerBot(new Bot());
+            telegramBotsApi.registerBot(new BotModuleApplication());
         } catch (TelegramApiRequestException e) {
             e.printStackTrace();
         }
@@ -39,7 +41,8 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
-        Model model = new Model();
+        BotCityInformationService botCityInformationService = new BotCityInformationServiceImpl();
+        BotCityInfo botCityInfo = new BotCityInfo();
         Message message = update.getMessage();
 
         if (message != null && message.hasText()) {
@@ -55,7 +58,7 @@ public class Bot extends TelegramLongPollingBot {
                 default:
                     try {
                         sendMsg(message,
-                                CityInformation.getCityInfo(message.getText(), model, getBotProperty("bot.id")),
+                                botCityInformationService.getCityInfo(message.getText(), botCityInfo, getBotProperty("bot.id")),
                                 false);
 
                     } catch (IOException e) {

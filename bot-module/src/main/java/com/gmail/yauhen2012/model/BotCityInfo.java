@@ -1,6 +1,6 @@
-package com.gmail.yauhen2012;
+package com.gmail.yauhen2012.model;
 
-public class Model {
+public class BotCityInfo {
 
     private String cityName;
     private String info;
