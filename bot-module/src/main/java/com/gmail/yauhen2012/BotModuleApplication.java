@@ -23,6 +23,8 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 
+import static com.gmail.yauhen2012.constant.BotMessageConstant.*;
+
 public class BotModuleApplication extends TelegramLongPollingBot {
 
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
@@ -48,12 +50,10 @@ public class BotModuleApplication extends TelegramLongPollingBot {
         if (message != null && message.hasText()) {
             switch (message.getText()) {
                 case "/start":
-                    sendMsg(message,
-                            "Hello! I'm a travelers bot. Press \"/help\" and I will tell you how to make friends with me",
-                            true);
+                    sendMsg(message, WELCOME_MESSAGE, true);
                     break;
                 case "/help":
-                    sendMsg(message, "I have five saved cities. You see four of them on the menu and the fifth is Tokyo. Use api if you want more cities", false);
+                    sendMsg(message, HELP_MESSAGE, false);
                     break;
                 default:
                     try {
@@ -62,9 +62,7 @@ public class BotModuleApplication extends TelegramLongPollingBot {
                                 false);
 
                     } catch (IOException e) {
-                        sendMsg(message,
-                                "Sorry, I don't know such a city. Perhaps you need to use the api and add it to the database",
-                                true);
+                        sendMsg(message, CITY_NOT_FOUND_MESSAGE, true);
                         logger.error("Command '" + message.getText() + "' not found");
                     }
             }
@@ -153,4 +151,5 @@ public class BotModuleApplication extends TelegramLongPollingBot {
         logger.error("Cannot find bot property - " + property);
         return null;
     }
+
 }

@@ -28,4 +28,5 @@ public class BotAPIController {
         Optional<CityInfoDTO> user = Optional.ofNullable(cityInfoService.findCityInfoByName(cityName, appId));
         return user.orElseThrow(() -> new RecordNotFoundException("City name '" + cityName + "' does no exist"));
     }
+
 }

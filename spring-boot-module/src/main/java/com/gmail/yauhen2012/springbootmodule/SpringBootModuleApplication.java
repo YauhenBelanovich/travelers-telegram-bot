@@ -7,18 +7,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication(scanBasePackages = {
-		"com.gmail.yauhen2012.repository",
-		"com.gmail.yauhen2012.service",
-		"com.gmail.yauhen2012.springbootmodule"})
+        "com.gmail.yauhen2012.repository",
+        "com.gmail.yauhen2012.service",
+        "com.gmail.yauhen2012.springbootmodule"})
 public class SpringBootModuleApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		SpringApplication.run(SpringBootModuleApplication.class, args);
+        SpringApplication.run(SpringBootModuleApplication.class, args);
 
-	}
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }
